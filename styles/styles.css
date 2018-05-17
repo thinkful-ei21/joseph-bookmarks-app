@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.container {
+  text-align: center;
+}
+
+.bookmark-container {
+  margin: 5px;
+  border: 3px dashed black;
+}
+
+.expand {
+  display: none;
+}
