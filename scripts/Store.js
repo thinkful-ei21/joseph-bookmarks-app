@@ -22,8 +22,11 @@ const Store = (function(){
     this.bookmarks = this.bookmarks.filter(bookmark => bookmark.id !== id);
   };
 
+
+
   return {
     bookmarks: [],
+    minimumRating: 0,
 
     addBookmark,
     findById,
