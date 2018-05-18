@@ -3,14 +3,20 @@ h1, h2 {
   margin-top: 0px;
 }
 
+a {
+  font-size: 20px;
+}
+
 ul {
   list-style-type: none;
+  margin: auto;
+  padding-left: 0px;
 }
 
 .bookmark-container {
   border: 2px dashed black;
   margin-bottom: 5px;
-  padding-bottom: 5px;
+  padding: 0 10px 10px 10px;
 }
 
 .expand {
