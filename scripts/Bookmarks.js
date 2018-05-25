@@ -11,22 +11,28 @@ const Bookmarks = (function(){
   // logging this function will return the string template with 'undefined' as the values
   const generateBookmarkElement = function(bookmark){
     return `
-      <li class="js-bookmark-element" data-item-id="${bookmark.id}">
-        <article>  
-          <div class="bookmark-container">
-            <p class="bookmark-title">${bookmark.title}</p>
-            <p>${bookmark.rating}</p>
-            <a class="expand" data-id="${bookmark.id}" target="_blank" href="${bookmark.url}">Visit Site</a>
-            <p class="expand" data-id="${bookmark.id}">${bookmark.desc}</p>
-            <div class="bookmark-list-utilities">
-              <button class="bookmark-delete js-bookmark-delete expand" data-id="${bookmark.id}">
-                <span class="button-label">Delete</span>
-              </button>
-            </div>
-          </div>  
-        </article>
-      </li>
-    `;
+
+      <div class="panel panel-default js-bookmark-element" data-item-id="${bookmark.id}">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#${bookmark.id}" aria-expanded="true" aria-controls="${bookmark.id}">
+              ${bookmark.title}
+              <span class="bookmark-rating">
+                ${renderStars(bookmark.rating)}
+              </span>
+            </a>
+          </h4>
+        </div>
+        <div id="${bookmark.id}" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <p data-id="${bookmark.id}">${bookmark.desc}</p>
+            <p><a data-id="${bookmark.id}" target="_blank" href="${bookmark.url}">Visit Site</a></p>
+            <button type="button" class="btn btn-danger js-bookmark-delete" data-id="${bookmark.id}">Delete</button>
+          </div>
+        </div>
+      </div>
+    `
+    ;
   };
 
   // create the above html for each bookmark object in the bookmarks array
@@ -36,6 +42,17 @@ const Bookmarks = (function(){
     return bookmarks.join('');
   };
 
+  // Tried this but failed //
+  const renderStars = function(starVal){
+    const starHTML = '<span class="glyphicon glyphicon-star"></span>';
+
+    let currentString = '';
+    for (let i = 0; i < starVal; i++){
+      currentString += starHTML;
+    }
+    return currentString;
+  };
+
   const render = function(){
     let bookmarks = Store.bookmarks.filter(bookmark => {
       return bookmark.rating >= Store.minimumRating;
@@ -43,7 +60,6 @@ const Bookmarks = (function(){
     
     // this will populate the 'ul' with html generated from passing in the array bookmarks
     $('.js-bookmarks-list').html(generateBookmarksListString(bookmarks));
-    console.log('render ran!');
   };
 
   const getItemIdFromElement = function(bookmark) {
@@ -87,13 +103,6 @@ const Bookmarks = (function(){
     });
   };
 
-  const handleBookmarkClicked = function(id){
-    $('.js-bookmarks-list').on('click', '.js-bookmark-element', event => {
-      const id = getItemIdFromElement(event.currentTarget);
-      $(`[data-id="${id}"]`).toggle();
-    });
-  };
-
   const handleMinimumRatingFilter = function() {
     $('.js-bookmark-rating-filter').on('change', event => {
       let rating = $(event.target).val();
@@ -106,7 +115,6 @@ const Bookmarks = (function(){
     // Add HANDLERS here
     handleNewBookmarkSubmit();
     handleBookmarkDeleteClicked();
-    handleBookmarkClicked();
     handleMinimumRatingFilter();
   };
 
